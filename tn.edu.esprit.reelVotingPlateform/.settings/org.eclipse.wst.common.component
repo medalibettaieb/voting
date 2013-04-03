@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="tn.edu.esprit.reelVotingPlateform">
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="tn.edu.esprit.reelVotingPlateformEJB.jar" deploy-path="/" handle="module:/resource/tn.edu.esprit.reelVotingPlateformEJB/tn.edu.esprit.reelVotingPlateformEJB">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="tn.edu.esprit.reelVotingPlateformWeb.war" deploy-path="/" handle="module:/resource/tn.edu.esprit.reelVotingPlateformWeb/tn.edu.esprit.reelVotingPlateformWeb">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>
