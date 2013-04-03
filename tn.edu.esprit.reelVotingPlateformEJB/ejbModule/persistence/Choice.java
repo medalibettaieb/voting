@@ -81,4 +81,8 @@ public class Choice implements Serializable {
 		this.theChoice = theChoice;
 	}
 
+	public void linkPartyToThisChoice(Party party) {
+		parties.add(party);
+
+	}
 }

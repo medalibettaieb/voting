@@ -1,8 +1,12 @@
 package services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import persistence.Affectation;
 import persistence.Choice;
@@ -127,11 +131,61 @@ public class VotingServices implements VotingServicesRemote,
 			Person person = findPersonById(idPerson);
 			Choice choice = findChoiceById(idChoice);
 			Question question = findQuestionById(idQuestion);
+
+			String jpql = "select a from Affectation a where a.person=:p and a.question=:q";
+			Query query = entityManager.createQuery(jpql);
+			query.setParameter("p", person);
+			query.setParameter("q", question);
+			try {
+				Affectation affectation = (Affectation) query.getSingleResult();
+				affectation.setChoice(choice);
+
+				entityManager.merge(affectation);
+
+			} catch (Exception e) {
+				System.err.println("affectation not found ");
+			}
+
 			b = true;
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		return b;
+	}
+
+	@Override
+	public boolean linkChoiceToParty(int idChoice, int idParty) {
+		boolean b = false;
+		try {
+			Party party = findPartyById(idParty);
+			Choice choice = findChoiceById(idChoice);
+
+			choice.linkPartyToThisChoice(party);
+			entityManager.merge(choice);
+			b = true;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return b;
+	}
+
+	@Override
+	public Party findPartyById(int idParty) {
+		return entityManager.find(Party.class, idParty);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Party> findListOfPartiesByChoice(int idChoice) {
+		List<Party> parties = new ArrayList<Party>();
+		Choice choice = findChoiceById(idChoice);
+		String jpql = "select p from Party  p where :c member of p.choices";
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter("c", choice);
+
+		parties = query.getResultList();
+
+		return parties;
 	}
 
 }
